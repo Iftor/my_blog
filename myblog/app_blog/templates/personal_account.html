@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+    <section class="section profile">
+        <div class="container">
+            <h2 class="section-title">Личные данные</h2>
+            <div class="content">
+                <ul class="profile__list list list-reset flex">
+                    <li class="profile__item">
+                        <h3 class="profile-item__caption">Имя</h3>
+                        <div class="profile-item__content">{{ user.first_name }} {{ user.last_name }}</div>
+                    </li>
+                    <li class="profile__item">
+                        <h3 class="profile-item__caption">Имя пользователя</h3>
+                        <div class="profile-item__content">{{ user.username }}</div>
+                    </li>
+                    <li class="profile__item">
+                        <h3 class="profile-item__caption">Дата регистрации</h3>
+                        <div class="profile-item__content">
+                            <time>{{ user_profile.registration_date }}</time>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="section deleted-pub">
+        <div class="container">
+            <h2 class="section-title">Удаленные публикации</h2>
+            <div class="deleted-pub-content content">
+                {% if deleted_blog_posts_total > 0 %}
+                    <div class="deleted-pub__counter flex">
+                        <h3 class="deleted-pub-counter__caption">Публикаций удалено</h3>
+                        <div class="deleted-pub-counter__content">{{ deleted_blog_posts_total }}</div>
+                    </div>
+                    <ul class="deleted-pub__list list list-reset flex">
+                        {% for deleted_blog_post in deleted_blog_posts %}
+                            <li class="deleted-pub__item">
+                                <p class="deleted-pub-item__text">{{ deleted_blog_post.text }}</p>
+                                <form class="deleted-pub-item__form flex" method="post">
+                                    <div class="deleted-pub-item__date">
+                                        <h3 class="deleted-pub-item-date__caption">Дата удаления</h3>
+                                        <time class="deleted-pub-item-date__content">{{ deleted_blog_post.delete_date }}</time>
+                                    </div>
+                                    {% csrf_token %}
+                                    <button class="deleted-pub-item__btn deleted-pub-item__btn--1 btn btn-reset" type="submit" name="restore" value="{{ deleted_blog_post.id }}">Восстановить</button>
+                                    <button class="deleted-pub-item__btn deleted-pub-item__btn--2 btn btn-reset" type="submit" name="hard-delete" value="{{ deleted_blog_post.id }}">Удалить окончательно</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="deleted-pub__empty">Нет удаленных записей</div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

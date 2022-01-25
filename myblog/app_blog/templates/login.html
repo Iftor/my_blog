@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+    <section class="section login">
+        <div class="container">
+            <h2 class="section-title">Авторизация</h2>
+            <div class="login-content content">
+                <form class="login__form flex" method="post">
+                    {% csrf_token %}
+                    {{ form.username }}
+                    {{ form.password }}
+                    <button class="login-form__btn btn btn-reset" type="submit">Войти</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ owner_username }}{% endblock %}
+
+{% block content %}
+    {% if is_owner %}
+        <section class="section add-pub">
+            <div class="container">
+                <h2 class="section-title">Новая публикация</h2>
+                <div class="content">
+                    <form class="add-pub__form flex" method="post">
+                        {% csrf_token %}
+                        {{ add_post_form.text }}
+                        <button class="add-pub-form__btn btn btn-reset" type="submit">Опубликовать</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    <section class="section publications">
+        <div class="container">
+            <h2 class="section-title">Публикации</h2>
+            <div class="content">
+                <ul class="publications__list list list-reset flex">
+                    {% for blog_post in blog_posts %}
+                        <li class="publications__item flex">
+                            <time class="publications-item__date">{{ blog_post.pub_date }}</time>
+                            <p class="publications-item__text">{{ blog_post.text }}</p>
+                            {% if is_owner %}
+                                <form class="publications-item__form flex" method="post">
+                                    {% csrf_token %}
+                                    <button class="publications-item-form__btn btn btn-reset" type="submit" name="delete" value="{{ blog_post.id }}">Удалить</button>
+                                </form>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li class="publications__empty">Нет публикаций</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <section class="section registration">
+        <div class="container">
+            <h2 class="section-title">Регистрация</h2>
+            <div class="content">
+                <form class="registration__form flex" method="post">
+                    {% csrf_token %}
+                    {{ form.username }}
+                    {{ form.firstname }}
+                    {{ form.lastname }}
+                    {{ form.password1 }}
+                    {{ form.password2 }}
+                    <button class="registration-form__btn btn btn-reset" type="submit">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
